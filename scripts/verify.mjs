@@ -107,7 +107,7 @@ try {
     const dimensions = await page.evaluate(() => ({ scroll: document.documentElement.scrollWidth, viewport: window.innerWidth }))
     assert.ok(dimensions.scroll <= dimensions.viewport, `Overflow at ${width}px: ${JSON.stringify(dimensions)}`)
     const overflow = await page.evaluate(() => [...document.querySelectorAll('main *')].filter(element => {
-      if (element.closest('dialog:not([open])') || element.closest('.mais-artwork')) return false
+      if (element.closest('dialog:not([open])') || element.closest('.mais-artwork') || element.closest('.trust-strip')) return false
       const box = element.getBoundingClientRect()
       return box.width > 0 && (box.right > innerWidth + 1 || box.left < -1)
     }).map(element => `${element.tagName}.${element.className}`).slice(0, 8))

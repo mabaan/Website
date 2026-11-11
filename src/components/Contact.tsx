@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { site } from '../content'
-import { Arrow, Wordmark } from './Identity'
+import { Arrow, Art, Wordmark } from './Identity'
 
 export default function Contact() {
   const email = site.email.trim()
@@ -31,13 +31,13 @@ export default function Contact() {
 
   return <>
     <section className="contact-section" id="contact" data-nav="contact" aria-labelledby="contact-title"><div className="container">
-      <p className="section-label"><span>↗</span>Something worth starting</p>
-      <div className="contact-main reveal"><h2 id="contact-title">{site.contact.heading}</h2><div className="contact-aside"><p>{site.contact.description}</p>{email ? <><a className="contact-button" href={emailHref}>{site.contact.cta}<Arrow diagonal /></a><a className="contact-email" href={emailHref}>{email}</a></> : <button className="contact-button" ref={triggerRef} type="button" onClick={() => setOpen(true)}>{site.contact.cta}<Arrow diagonal /></button>}</div></div>
+      <p className="section-label"><span>06</span>Contact</p>
+      <div className="contact-main reveal"><div className="contact-heading"><h2 id="contact-title">{site.contact.heading}</h2><Art name="envelope" size={200} className="float contact-art" /></div><div className="contact-aside"><p>{site.contact.description}</p>{email ? <><a className="contact-button" href={emailHref}>{site.contact.cta}<Arrow diagonal /></a><a className="contact-email" href={emailHref}>{email}</a></> : <button className="contact-button" ref={triggerRef} type="button" onClick={() => setOpen(true)}>{site.contact.cta}<Arrow diagonal /></button>}</div></div>
     </div></section>
-    <footer className="footer"><div className="container footer-top"><Wordmark /><p>Start with the problem.</p><a className="back-top" href="#top">Back to top <span aria-hidden="true">↑</span></a></div><div className="container footer-bottom"><span>{site.location} · {site.year}</span><span>Idea. Intelligence. Innovation. Impact.</span></div></footer>
+    <footer className="footer"><div className="container footer-top"><Wordmark /><a className="back-top" href="#top">Back to top <span aria-hidden="true">↑</span></a></div><div className="container footer-bottom"><span>{site.parent ? `${site.parent} · ` : ''}{site.location} · {site.year}</span><span>© {site.year} {site.name}</span></div></footer>
     {!email ? <dialog className="contact-dialog" ref={dialogRef} onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === event.currentTarget) close() }} aria-labelledby="dialog-title">
-      <div className="dialog-header"><span className="micro-label">A GOOD PLACE TO START</span><button className="close-dialog" type="button" aria-label="Close conversation" onClick={close}>×</button></div>
-      <h2 id="dialog-title">Tell us what<br /><em>should work better.</em></h2>
+      <div className="dialog-header"><span className="micro-label">CONTACT</span><button className="close-dialog" type="button" aria-label="Close conversation" onClick={close}>×</button></div>
+      <h2 id="dialog-title">Introduce your project</h2>
       <p>Prepare a short introduction to share with your Starturi contact. Direct email will be available here once a contact address is confirmed.</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="contact-name">Your name<input autoComplete="name" id="contact-name" name="name" required maxLength={120} value={name} onChange={event => { setName(event.target.value); setStatus('') }} placeholder="Name" /></label>

@@ -56,3 +56,11 @@ npm run test:config
 ```
 
 Checks cover desktop and mobile layout at five widths (320–1440px), console and network errors, all seven MAIS capabilities, keyboard navigation, disclosure rows, every navigation destination, contact behavior, modal focus, reduced motion, product framing and the delivered sharing asset/metadata. Axe checks WCAG A/AA rules on desktop, mobile and the contact dialog. Screenshots are saved to the ignored `.qa/` directory. `test:config` additionally checks populated and empty demo, founder, email and canonical configurations using in-memory fixtures; it does not write fake details into the site.
+
+## Brand assets
+
+- `public/brand/3d/*.webp` — 3D illustrations from the parent-brand library, recoloured from the brand mint to the site orange (`#df4b2f`) and optimised to ≤520px WebP. Logo/mascot artwork is intentionally excluded. To regenerate or add one, re-run the hue mapping on the original PNG.
+- `public/brand/icons/*.svg` — line icons from the brand system-icon kit, recoloured through CSS (`<Icon name="…" />` uses them as a mask, so they take `currentColor`).
+- `public/fonts/` — Kaspersky Sans Display (UI) and Kaspersky Sans Mono (labels). Instrument Serif is kept for italic accents.
+- Use `<Art name="shield" />` and `<Icon name="nodes" />` from `src/components/Identity.tsx`. Section-level art is set in `src/content.ts` (`art` / `icon` fields).
+- `site.parent` in `src/content.ts` adds an optional "A … company" line to the hero and footer. It is empty for now.

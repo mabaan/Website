@@ -1,26 +1,24 @@
 import { products, site } from '../content'
-import { Arrow, Mark, SectionLabel } from './Identity'
+import { Arrow, Art, SectionLabel } from './Identity'
 
 function MaisArtwork() {
   return <div className="mais-artwork" aria-hidden="true">
-    <div className="artwork-note">A connected view.<br />A considered decision.</div>
-    <div className="research-sheet sheet-back"><span>03 / PORTFOLIO CONTEXT</span><div className="sheet-bars"><i /><i /><i /><i /><i /></div></div>
-    <div className="research-sheet sheet-middle"><span>02 / EVIDENCE & CONTEXT</span><div className="sheet-lines"><i /><i /><i /><i /></div><div className="sheet-stamp">SOURCE<br />CONNECTED</div></div>
-    <div className="research-sheet sheet-front"><div className="sheet-topline"><span>01 / INVESTMENT THESIS</span><Mark /></div><strong>See the whole.<br /><em>Decide with context.</em></strong><div className="sheet-bottom"><span>MAIS</span><span>Research → Reasoning → Decision</span></div></div>
-    <div className="artwork-footnote"><span>THE PARTS, WORKING TOGETHER.</span><span>↗</span></div>
+    <Art name="chart-trend" size={220} className="float mais-float mais-float-a" />
+    <Art name="donut" size={170} className="float float-late mais-float mais-float-b" />
+    <Art name="bars" size={130} className="float float-slow mais-float mais-float-c" />
   </div>
 }
 
 export default function Products() {
   return <section className="products-section" id="products" data-nav="products" aria-labelledby="products-title">
     <div className="container">
-      <SectionLabel number="02">The product portfolio</SectionLabel>
+      <SectionLabel number="02">Products</SectionLabel>
       <div className="section-heading-row reveal"><h2 id="products-title">{site.productsIntro.heading}</h2><p>{site.productsIntro.description}</p></div>
       <div className="product-entries">
         {products.map((product, index) => <article key={product.id} className="product-entry featured-product reveal">
           <div className="product-copy">
             <div className="product-meta"><p className="product-category"><span>{String(index + 1).padStart(2, '0')}</span> / {product.category}</p><span className="product-status">{product.stage}</span></div>
-            <h3 className="product-name">{product.name}<span>↗</span></h3>
+            <h3 className="product-name">{product.name}</h3>
             <h4>{product.headline}</h4>
             {product.description.map(text => <p className="product-description" key={text}>{text}</p>)}
             {product.capabilities ? <ul className="capability-list">{product.capabilities.map(capability => <li key={capability}>{capability}</li>)}</ul> : null}
@@ -38,7 +36,7 @@ export default function Products() {
             <p className="product-description">{site.whatsNext.description}</p>
             <a className="text-link product-link" href={site.whatsNext.href}>Where we’re looking<Arrow diagonal /></a>
           </div>
-          <div className="next-product-art" aria-hidden="true"><span className="next-cross">+</span><span>ROOM FOR THE<br />NEXT GOOD QUESTION.</span></div>
+          <div className="next-product-art" aria-hidden="true"><span className="next-cross"><Art name="cube-hex" size={90} /></span></div>
         </article>
       </div>
     </div>
