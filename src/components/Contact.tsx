@@ -23,7 +23,7 @@ export default function Contact() {
     const message = `Hello ${site.name},\n\n${problem.trim()}\n\n${name.trim()}`
     try {
       await navigator.clipboard.writeText(message)
-      setStatus('Introduction copied. Share it with the person who introduced you to Starturi. Nothing has been sent or stored.')
+      setStatus(`Introduction copied. Share it with the person who introduced you to ${site.name}. Nothing has been sent or stored.`)
     } catch {
       setStatus('Clipboard unavailable. You can select and copy the text in the fields above. Nothing has been sent or stored.')
     }
@@ -38,7 +38,7 @@ export default function Contact() {
     {!email ? <dialog className="contact-dialog" ref={dialogRef} onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === event.currentTarget) close() }} aria-labelledby="dialog-title">
       <div className="dialog-header"><span className="micro-label">CONTACT</span><button className="close-dialog" type="button" aria-label="Close conversation" onClick={close}>×</button></div>
       <h2 id="dialog-title">Introduce your project</h2>
-      <p>Prepare a short introduction to share with your Starturi contact. Direct email will be available here once a contact address is confirmed.</p>
+      <p>Prepare a short introduction to share with your {site.name} contact. Direct email will be available here once a contact address is confirmed.</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="contact-name">Your name<input autoComplete="name" id="contact-name" name="name" required maxLength={120} value={name} onChange={event => { setName(event.target.value); setStatus('') }} placeholder="Name" /></label>
         <label htmlFor="contact-problem">What should work better?<textarea id="contact-problem" name="problem" required minLength={10} maxLength={4000} rows={4} value={problem} onChange={event => { setProblem(event.target.value); setStatus('') }} placeholder="The problem, the people it affects, and how it works today…" /></label>

@@ -7,26 +7,30 @@ export type Founder = {
 
 // Working identity, editorial copy and product portfolio live here.
 export const site = {
-  name: 'Starturi',
+  name: 'Moduled AI',
+  brand: {
+    logo: '/brand/moduled/moduled-ai-logo.png',
+    mark: '/brand/moduled/moduled-ai-mark.png',
+  },
   location: 'UAE',
   year: '2026',
   // Add a verified address to enable the email handoff. Until then, visitors
   // can compose and copy an introduction without contacting a fictional inbox.
   email: '',
-  // Optional parent-company line, e.g. 'A Kaspersky company'. Empty hides it.
+  // Optional, verified parent-company relationship. Empty hides this line.
   parent: '',
   // Add real founding-team details here. An empty list renders no team area.
   founders: [] as Founder[],
   seo: {
-    title: 'Starturi — Start with the problem.',
-    description: 'Starturi builds focused AI products around real business problems. Meet the company and explore MAIS, our Multi-Agent Investment System.',
+    title: 'Moduled AI | Start with the problem.',
+    description: 'Moduled AI builds focused AI products around real business problems. Meet the company and explore MAIS, our Multi-Agent Investment System.',
     // Set the verified, public canonical URL when the domain is finalized.
     // Until then, canonical and og:url are omitted rather than guessed.
     url: '',
-    image: '/og/starturi.png',
+    image: '/og/moduled-ai.png',
     imageWidth: 1200,
     imageHeight: 630,
-    imageAlt: 'Starturi. Start with the problem.',
+    imageAlt: 'Moduled AI. Start with the problem.',
   },
   navigation: [
     { label: 'What we do', id: 'premise' },
@@ -41,7 +45,6 @@ export const site = {
     secondLine: 'Build the product',
     thirdLine: 'around it.',
     description: 'We build focused AI products for real business problems, combining agents, models, enterprise data and human judgment into systems people can actually use.',
-    principles: ['Idea.', 'Intelligence.', 'Innovation.', 'Impact.'],
   },
   premise: {
     heading: ['Focused products', 'for real business problems.'],
@@ -57,7 +60,7 @@ export const site = {
   },
   productsIntro: {
     heading: 'Products built around problems worth solving.',
-    description: 'Each Starturi product begins with a specific workflow, decision or problem. The technology changes depending on what the product actually needs.',
+    description: 'Each Moduled AI product begins with a specific workflow, decision or problem. The technology changes depending on what the product actually needs.',
   },
   whatsNext: {
     label: 'What’s next',
@@ -87,8 +90,8 @@ export const site = {
     ],
   },
   foundations: {
-    heading: ['Shared engineering', 'across products.'],
-    description: 'Our products share a growing foundation of technical capabilities. The engineering carries forward. The workflow is always purpose-built.',
+    heading: ['Shared modules.', 'Purpose-built products.'],
+    description: 'Moduled AI reuses technical building blocks where they make sense: orchestration, retrieval, integrations and human controls. Each product is designed around its specific workflow.',
     capabilities: [
       { name: 'Agent orchestration', icon: 'nodes' },
       { name: 'Retrieval & knowledge systems', icon: 'search-chart' },
@@ -115,8 +118,8 @@ export const site = {
     ],
   },
   about: {
-    heading: 'About Starturi',
-    description: 'Starturi is an early-stage technology company building AI products for complex business problems.',
+    heading: 'About Moduled AI',
+    description: 'Moduled AI is an early-stage technology company building AI products for complex business problems.',
     detail: 'We combine AI research, software engineering and product thinking to turn difficult workflows into focused, useful products.',
   },
   contact: {

@@ -18,8 +18,6 @@ function HeroStage() {
   return <div className="hero-stage" aria-hidden="true">
     <div className="stage-disc" />
     <Art name="hex-cluster" className="float stage-core" size={360} eager />
-    <Art name="globe" className="float float-slow stage-globe" size={150} eager />
-    <Art name="server" className="float float-late stage-server" size={120} eager />
   </div>
 }
 

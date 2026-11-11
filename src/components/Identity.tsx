@@ -1,11 +1,7 @@
 import { site } from '../content'
 
-export function Mark({ className = '' }: { className?: string }) {
-  return <span className={`brand-mark ${className}`} aria-hidden="true"><i /><i /><i /><i /></span>
-}
-
 export function Wordmark() {
-  return <a className="wordmark" href="#top" aria-label={`${site.name} home`}><Mark /><span>{site.name}<span className="wordmark-period">.</span></span></a>
+  return <a className="wordmark" href="#top" aria-label={`${site.name} home`}><img src={site.brand.logo} alt="Moduled.ai" width="1735" height="333" decoding="async" /></a>
 }
 
 export function Arrow({ diagonal = false }: { diagonal?: boolean }) {

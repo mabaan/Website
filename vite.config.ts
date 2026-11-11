@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [
     react(),
     {
-      name: 'starturi-sharing-metadata',
+      name: 'moduled-ai-sharing-metadata',
       transformIndexHtml(html) {
         return html.replace('<!-- site:metadata -->', renderMetadata(site.seo, site.name))
       },

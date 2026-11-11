@@ -18,7 +18,18 @@ try {
   assert.equal(response.status(), 200)
   await page.evaluate(() => document.fonts.ready)
   assert.equal(await page.locator('h1').count(), 1)
-  assert.match(await page.title(), /Starturi/)
+  assert.match(await page.title(), /Moduled AI/)
+  const logoImages = page.locator('.wordmark img')
+  assert.equal(await logoImages.count(), 2)
+  assert.equal(await page.getByRole('link', { name: 'Moduled AI home' }).count(), 2)
+  await logoImages.first().evaluate(image => image.decode())
+  assert.equal(await logoImages.first().getAttribute('src'), '/brand/moduled/moduled-ai-logo.png')
+  const faviconResponse = await page.request.get(new URL('/brand/moduled/favicon-32.png', baseURL).href)
+  assert.equal(faviconResponse.status(), 200)
+  const faviconBytes = await faviconResponse.body()
+  assert.equal(faviconBytes.readUInt32BE(16), 32)
+  assert.equal(faviconBytes.readUInt32BE(20), 32)
+  assert.equal(await page.locator('link[rel="icon"][sizes="32x32"]').getAttribute('type'), 'image/png')
   assert.equal(await page.getByRole('tab').count(), 7)
   assert.equal(await page.locator('.featured-product').count(), 1)
   assert.match(await page.locator('.featured-product .product-category').innerText(), /^01\s*\/\s*Investment intelligence$/i)
@@ -29,7 +40,7 @@ try {
   assert.equal(await page.locator('.founding-team').count(), 0)
   assert.doesNotMatch(await page.locator('footer').innerText(), /Always a work in progress/)
   const initialHTML = await response.text()
-  assert.match(initialHTML, /property="og:image" content="\/og\/starturi.png"/)
+  assert.match(initialHTML, /property="og:image" content="\/og\/moduled-ai.png"/)
   assert.match(initialHTML, /property="og:image:width" content="1200"/)
   assert.match(initialHTML, /property="og:image:height" content="630"/)
   assert.match(initialHTML, /name="twitter:card" content="summary_large_image"/)
@@ -37,7 +48,7 @@ try {
     assert.equal(await page.locator(`meta[property="og:${property}"]`).getAttribute('content'), await page.locator(`meta[name="twitter:${property}"]`).getAttribute('content'))
   }
   assert.doesNotMatch(initialHTML, /rel="canonical"|property="og:url"/)
-  const imageResponse = await page.request.get(new URL('/og/starturi.png', baseURL).href)
+  const imageResponse = await page.request.get(new URL('/og/moduled-ai.png', baseURL).href)
   assert.equal(imageResponse.status(), 200)
   assert.match(imageResponse.headers()['content-type'], /image\/png/)
   const imageBytes = await imageResponse.body()
@@ -93,7 +104,7 @@ try {
   await page.getByLabel('What should work better?', { exact: true }).fill('Our team spends hours comparing evidence from separate internal systems.')
   await page.getByRole('button', { name: 'Copy introduction' }).click()
   await page.getByRole('status').filter({ hasText: 'Introduction copied' }).waitFor()
-  assert.match(await page.evaluate(() => navigator.clipboard.readText()), /Hello Starturi/)
+  assert.match(await page.evaluate(() => navigator.clipboard.readText()), /Hello Moduled AI/)
   await page.screenshot({ path: '.qa/contact.png' })
   await page.keyboard.press('Escape')
   assert.equal(await page.getByRole('dialog').isVisible(), false)
@@ -112,6 +123,18 @@ try {
       return box.width > 0 && (box.right > innerWidth + 1 || box.left < -1)
     }).map(element => `${element.tagName}.${element.className}`).slice(0, 8))
     assert.deepEqual(overflow, [], `Elements outside viewport at ${width}px`)
+    for (const logo of await logoImages.all()) {
+      const size = await logo.evaluate(image => ({
+        naturalRatio: image.naturalWidth / image.naturalHeight,
+        renderedRatio: image.getBoundingClientRect().width / image.getBoundingClientRect().height,
+        width: image.getBoundingClientRect().width,
+        filter: getComputedStyle(image).filter,
+      }))
+      assert.ok(Math.abs(size.naturalRatio - size.renderedRatio) < 0.01, `Official logo proportions at ${width}px`)
+      assert.ok(size.width <= 200, `Restrained logo size at ${width}px`)
+      assert.equal(size.filter, 'none', 'Official logo keeps its original colors')
+    }
+    if (width === 320 || width === 768) await page.screenshot({ path: `.qa/hero-${width}.png` })
     if (width === 390) {
       await page.screenshot({ path: '.qa/mobile-hero.png' })
       await page.screenshot({ path: '.qa/mobile-full.png', fullPage: true })
@@ -136,7 +159,7 @@ try {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'smooth')
   assert.deepEqual(errors, [], 'No console, runtime or HTTP errors')
-  console.log('PASS: desktop/mobile, five viewport widths, seven MAIS tabs, keyboard selection, disclosures, all navigation links, mobile menu, contact clipboard, focus restoration and reduced motion. Prototype/exploration framing, unconfigured-state hiding and static social metadata with a valid 1200×630 PNG verified. No browser errors. Zero axe WCAG A/AA violations on desktop, mobile and contact dialog.')
+  console.log('PASS: desktop/mobile, five viewport widths, seven MAIS tabs, keyboard selection, disclosures, all navigation links, mobile menu, contact clipboard, focus restoration and reduced motion. Official logo proportions/colors, M favicon, prototype/exploration framing, unconfigured-state hiding and static social metadata with a valid 1200×630 PNG verified. No browser errors. Zero axe WCAG A/AA violations on desktop, mobile and contact dialog.')
 } finally {
   await browser.close()
 }
