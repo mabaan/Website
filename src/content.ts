@@ -1,3 +1,10 @@
+export type Founder = {
+  name: string
+  role: string
+  description: string
+  linkedinUrl?: string
+}
+
 // Working identity, editorial copy and product portfolio live here.
 export const site = {
   name: 'Starturi',
@@ -6,6 +13,19 @@ export const site = {
   // Add a verified address to enable the email handoff. Until then, visitors
   // can compose and copy an introduction without contacting a fictional inbox.
   email: '',
+  // Add real founding-team details here. An empty list renders no team area.
+  founders: [] as Founder[],
+  seo: {
+    title: 'Starturi — Start with the problem.',
+    description: 'Starturi builds focused AI products around real business problems. Meet the company and explore MAIS, our Multi-Agent Investment System.',
+    // Set the verified, public canonical URL when the domain is finalized.
+    // Until then, canonical and og:url are omitted rather than guessed.
+    url: '',
+    image: '/og/starturi.png',
+    imageWidth: 1200,
+    imageHeight: 630,
+    imageAlt: 'Starturi. Start with the problem.',
+  },
   navigation: [
     { label: 'What we do', id: 'premise' },
     { label: 'Products', id: 'products' },
@@ -36,6 +56,12 @@ export const site = {
   productsIntro: {
     heading: 'Products built around problems worth solving.',
     description: 'Each Starturi product begins with a specific workflow, decision or problem. The technology changes depending on what the product actually needs.',
+  },
+  whatsNext: {
+    label: 'What’s next',
+    headline: 'The next product starts with another problem.',
+    description: 'We are exploring workflows where large amounts of information, repetitive analysis and human judgment still have to come together manually.',
+    href: '#exploration',
   },
   showcase: {
     heading: 'Intelligence built around an investment decision.',
@@ -92,8 +118,9 @@ export const site = {
 export type Product = {
   id: string
   category: string
-  name?: string
-  status: 'product' | 'exploration'
+  name: string
+  stage: string
+  prototypeUrl?: string
   headline: string
   description: string[]
   capabilities?: string[]
@@ -105,7 +132,9 @@ export const products: Product[] = [
     id: 'mais',
     category: 'Investment intelligence',
     name: 'MAIS',
-    status: 'product',
+    stage: 'Prototype',
+    // Add a real, absolute demo URL to show the secondary "View prototype" link.
+    prototypeUrl: '',
     headline: 'Investment intelligence that keeps the full picture in view.',
     description: [
       'Institutional investment teams work across market data, company information, internal research, portfolio context, previous decisions and constantly changing assumptions.',
@@ -113,14 +142,6 @@ export const products: Product[] = [
     ],
     capabilities: ['Investment thesis tracking', 'Company research', 'Portfolio context', 'Scenario analysis', 'Evidence lineage', 'Event monitoring', 'Decision history', 'Enterprise data integrations'],
     href: '#mais-detail',
-  },
-  {
-    id: 'next',
-    category: 'In development',
-    status: 'exploration',
-    headline: 'The next product starts with another problem.',
-    description: ['We are exploring workflows where large amounts of information, repetitive analysis and human judgment still have to come together manually.'],
-    href: '#exploration',
   },
 ]
 

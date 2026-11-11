@@ -3,6 +3,8 @@ import { site } from '../content'
 import { Arrow, Wordmark } from './Identity'
 
 export default function Contact() {
+  const email = site.email.trim()
+  const emailHref = `mailto:${email}?subject=${encodeURIComponent('A problem worth building around')}`
   const [open, setOpen] = useState(false)
   const [status, setStatus] = useState('')
   const [problem, setProblem] = useState('')
@@ -19,11 +21,6 @@ export default function Contact() {
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
     const message = `Hello ${site.name},\n\n${problem.trim()}\n\n${name.trim()}`
-    if (site.email) {
-      window.location.href = `mailto:${site.email}?subject=${encodeURIComponent('A problem worth building around')}&body=${encodeURIComponent(message)}`
-      setStatus('Your introduction is ready in your email app.')
-      return
-    }
     try {
       await navigator.clipboard.writeText(message)
       setStatus('Introduction copied. Share it with the person who introduced you to Starturi. Nothing has been sent or stored.')
@@ -35,19 +32,19 @@ export default function Contact() {
   return <>
     <section className="contact-section" id="contact" data-nav="contact" aria-labelledby="contact-title"><div className="container">
       <p className="section-label"><span>↗</span>Something worth starting</p>
-      <div className="contact-main reveal"><h2 id="contact-title">{site.contact.heading}</h2><div className="contact-aside"><p>{site.contact.description}</p><button className="contact-button" ref={triggerRef} type="button" onClick={() => setOpen(true)}>{site.contact.cta}<Arrow diagonal /></button></div></div>
+      <div className="contact-main reveal"><h2 id="contact-title">{site.contact.heading}</h2><div className="contact-aside"><p>{site.contact.description}</p>{email ? <><a className="contact-button" href={emailHref}>{site.contact.cta}<Arrow diagonal /></a><a className="contact-email" href={emailHref}>{email}</a></> : <button className="contact-button" ref={triggerRef} type="button" onClick={() => setOpen(true)}>{site.contact.cta}<Arrow diagonal /></button>}</div></div>
     </div></section>
-    <footer className="footer"><div className="container footer-top"><Wordmark /><p>Start with the problem.</p><a className="back-top" href="#top">Back to top <span aria-hidden="true">↑</span></a></div><div className="container footer-bottom"><span>{site.location} · {site.year}</span><span>Idea. Intelligence. Innovation. Impact.</span><span>Always a work in progress.</span></div></footer>
-    <dialog className="contact-dialog" ref={dialogRef} onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === event.currentTarget) close() }} aria-labelledby="dialog-title">
+    <footer className="footer"><div className="container footer-top"><Wordmark /><p>Start with the problem.</p><a className="back-top" href="#top">Back to top <span aria-hidden="true">↑</span></a></div><div className="container footer-bottom"><span>{site.location} · {site.year}</span><span>Idea. Intelligence. Innovation. Impact.</span></div></footer>
+    {!email ? <dialog className="contact-dialog" ref={dialogRef} onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === event.currentTarget) close() }} aria-labelledby="dialog-title">
       <div className="dialog-header"><span className="micro-label">A GOOD PLACE TO START</span><button className="close-dialog" type="button" aria-label="Close conversation" onClick={close}>×</button></div>
       <h2 id="dialog-title">Tell us what<br /><em>should work better.</em></h2>
-      <p>{site.email ? 'Start with a little context. We’ll take it from there.' : 'Prepare a short introduction to share with your Starturi contact. Direct email will be available here once a contact address is confirmed.'}</p>
+      <p>Prepare a short introduction to share with your Starturi contact. Direct email will be available here once a contact address is confirmed.</p>
       <form onSubmit={handleSubmit}>
         <label htmlFor="contact-name">Your name<input autoComplete="name" id="contact-name" name="name" required maxLength={120} value={name} onChange={event => { setName(event.target.value); setStatus('') }} placeholder="Name" /></label>
         <label htmlFor="contact-problem">What should work better?<textarea id="contact-problem" name="problem" required minLength={10} maxLength={4000} rows={4} value={problem} onChange={event => { setProblem(event.target.value); setStatus('') }} placeholder="The problem, the people it affects, and how it works today…" /></label>
-        <button className="button button-dark" type="submit">{site.email ? 'Continue in email' : 'Copy introduction'}<Arrow diagonal /></button>
+        <button className="button button-dark" type="submit">Copy introduction<Arrow diagonal /></button>
         <p className="form-status" role="status">{status}</p>
       </form>
-    </dialog>
+    </dialog> : null}
   </>
 }

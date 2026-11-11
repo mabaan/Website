@@ -17,17 +17,29 @@ export default function Products() {
       <SectionLabel number="02">The product portfolio</SectionLabel>
       <div className="section-heading-row reveal"><h2 id="products-title">{site.productsIntro.heading}</h2><p>{site.productsIntro.description}</p></div>
       <div className="product-entries">
-        {products.map((product, index) => <article key={product.id} className={`product-entry ${product.status === 'exploration' ? 'next-product' : 'featured-product'} reveal`}>
+        {products.map((product, index) => <article key={product.id} className="product-entry featured-product reveal">
           <div className="product-copy">
-            <p className="product-category"><span>{String(index + 1).padStart(2, '0')}</span> / {product.category}{product.status === 'exploration' ? <span className="development-dot" /> : null}</p>
-            {product.name ? <h3 className="product-name">{product.name}<span>↗</span></h3> : null}
-            {product.status === 'product' ? <h4>{product.headline}</h4> : <h3 className="next-product-title">{product.headline}</h3>}
+            <div className="product-meta"><p className="product-category"><span>{String(index + 1).padStart(2, '0')}</span> / {product.category}</p><span className="product-status">{product.stage}</span></div>
+            <h3 className="product-name">{product.name}<span>↗</span></h3>
+            <h4>{product.headline}</h4>
             {product.description.map(text => <p className="product-description" key={text}>{text}</p>)}
             {product.capabilities ? <ul className="capability-list">{product.capabilities.map(capability => <li key={capability}>{capability}</li>)}</ul> : null}
-            {product.href ? <a className="text-link product-link" href={product.href}>{product.status === 'product' ? `Explore ${product.name}` : 'Where we’re looking'}<Arrow diagonal /></a> : null}
+            <div className="product-actions">
+              {product.href ? <a className="text-link product-link" href={product.href}>Explore {product.name}<Arrow diagonal /></a> : null}
+              {product.prototypeUrl?.trim() ? <a className="text-link prototype-link" href={product.prototypeUrl.trim()} target="_blank" rel="noopener noreferrer">View prototype<Arrow diagonal /><span className="sr-only"> (opens in a new tab)</span></a> : null}
+            </div>
           </div>
-          {product.id === 'mais' ? <MaisArtwork /> : <div className="next-product-art" aria-hidden="true"><span className="next-cross">+</span><span>ROOM FOR THE<br />NEXT GOOD QUESTION.</span></div>}
+          {product.id === 'mais' ? <MaisArtwork /> : null}
         </article>)}
+        <article className="product-entry next-product reveal">
+          <div className="product-copy">
+            <p className="product-category">{site.whatsNext.label}</p>
+            <h3 className="next-product-title">{site.whatsNext.headline}</h3>
+            <p className="product-description">{site.whatsNext.description}</p>
+            <a className="text-link product-link" href={site.whatsNext.href}>Where we’re looking<Arrow diagonal /></a>
+          </div>
+          <div className="next-product-art" aria-hidden="true"><span className="next-cross">+</span><span>ROOM FOR THE<br />NEXT GOOD QUESTION.</span></div>
+        </article>
       </div>
     </div>
   </section>

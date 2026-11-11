@@ -20,6 +20,29 @@ try {
   assert.equal(await page.locator('h1').count(), 1)
   assert.match(await page.title(), /Starturi/)
   assert.equal(await page.getByRole('tab').count(), 7)
+  assert.equal(await page.locator('.featured-product').count(), 1)
+  assert.match(await page.locator('.featured-product .product-category').innerText(), /^01\s*\/\s*Investment intelligence$/i)
+  assert.equal(await page.locator('.product-status').innerText(), 'Prototype')
+  assert.equal(await page.locator('.next-product .product-category').innerText(), 'WHAT’S NEXT')
+  assert.doesNotMatch(await page.locator('.next-product').innerText(), /Product 02|In development/i)
+  assert.equal(await page.getByRole('link', { name: /View prototype/ }).count(), 0)
+  assert.equal(await page.locator('.founding-team').count(), 0)
+  assert.doesNotMatch(await page.locator('footer').innerText(), /Always a work in progress/)
+  const initialHTML = await response.text()
+  assert.match(initialHTML, /property="og:image" content="\/og\/starturi.png"/)
+  assert.match(initialHTML, /property="og:image:width" content="1200"/)
+  assert.match(initialHTML, /property="og:image:height" content="630"/)
+  assert.match(initialHTML, /name="twitter:card" content="summary_large_image"/)
+  for (const property of ['title', 'description', 'image']) {
+    assert.equal(await page.locator(`meta[property="og:${property}"]`).getAttribute('content'), await page.locator(`meta[name="twitter:${property}"]`).getAttribute('content'))
+  }
+  assert.doesNotMatch(initialHTML, /rel="canonical"|property="og:url"/)
+  const imageResponse = await page.request.get(new URL('/og/starturi.png', baseURL).href)
+  assert.equal(imageResponse.status(), 200)
+  assert.match(imageResponse.headers()['content-type'], /image\/png/)
+  const imageBytes = await imageResponse.body()
+  assert.equal(imageBytes.readUInt32BE(16), 1200)
+  assert.equal(imageBytes.readUInt32BE(20), 630)
   await page.screenshot({ path: '.qa/desktop-hero.png' })
 
   // Reveal every section before taking a complete-page screenshot.
@@ -29,6 +52,8 @@ try {
   }
   await page.locator('#top').scrollIntoViewIfNeeded()
   await page.screenshot({ path: '.qa/desktop-full.png', fullPage: true })
+  await page.locator('.featured-product').scrollIntoViewIfNeeded()
+  await page.screenshot({ path: '.qa/products-desktop.png' })
   const accessibility = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze()
   assert.deepEqual(accessibility.violations.map(issue => ({ id: issue.id, targets: issue.nodes.map(node => node.target) })), [], 'Desktop accessibility scan')
   const tabs = page.getByRole('tab')
@@ -111,7 +136,7 @@ try {
   await page.emulateMedia({ reducedMotion: 'no-preference' })
   assert.equal(await page.evaluate(() => getComputedStyle(document.documentElement).scrollBehavior), 'smooth')
   assert.deepEqual(errors, [], 'No console, runtime or HTTP errors')
-  console.log('PASS: desktop/mobile, five viewport widths, seven MAIS tabs, keyboard selection, disclosures, all navigation links, mobile menu, contact clipboard, focus restoration and reduced motion. No browser errors. Zero axe WCAG A/AA violations on desktop, mobile and contact dialog.')
+  console.log('PASS: desktop/mobile, five viewport widths, seven MAIS tabs, keyboard selection, disclosures, all navigation links, mobile menu, contact clipboard, focus restoration and reduced motion. Prototype/exploration framing, unconfigured-state hiding and static social metadata with a valid 1200×630 PNG verified. No browser errors. Zero axe WCAG A/AA violations on desktop, mobile and contact dialog.')
 } finally {
   await browser.close()
 }

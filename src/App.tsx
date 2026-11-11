@@ -5,6 +5,7 @@ import ProblemDrawing from './components/ProblemDrawing'
 import Products from './components/Products'
 import IntelligenceShowcase from './components/IntelligenceShowcase'
 import Contact from './components/Contact'
+import FoundingTeam from './components/FoundingTeam'
 import { Arrow, SectionLabel } from './components/Identity'
 
 function Hero() {
@@ -43,7 +44,7 @@ function Philosophy() {
 }
 
 function About() {
-  return <section id="about" data-nav="about" className="about-section section-space" aria-labelledby="about-title"><div className="container"><SectionLabel number="05">A little about us</SectionLabel><div className="about-layout reveal"><h2 id="about-title">{site.about.heading.split('\n').map(line => <span key={line}>{line}</span>)}</h2><div><p className="about-lead">{site.about.description}</p><p>{site.about.detail}</p><span className="about-signoff"><span className="accent-square" />{site.name} · {site.location}</span></div></div></div></section>
+  return <section id="about" data-nav="about" className="about-section section-space" aria-labelledby="about-title"><div className="container"><SectionLabel number="05">A little about us</SectionLabel><div className="about-layout reveal"><h2 id="about-title">{site.about.heading.split('\n').map(line => <span key={line}>{line}</span>)}</h2><div><p className="about-lead">{site.about.description}</p><p>{site.about.detail}</p><span className="about-signoff"><span className="accent-square" />{site.name} · {site.location}</span></div></div><FoundingTeam /></div></section>
 }
 
 export default function App() {

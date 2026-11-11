@@ -8,6 +8,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "check": "tsc -b",
+    "generate:og": "node --experimental-strip-types scripts/generate-og.ts",
+    "test:config": "node scripts/verify-config.mjs",
     "test:browser": "node scripts/verify.mjs"
   },
   "dependencies": {
