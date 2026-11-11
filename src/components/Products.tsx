@@ -1,0 +1,34 @@
+import { products, site } from '../content'
+import { Arrow, Mark, SectionLabel } from './Identity'
+
+function MaisArtwork() {
+  return <div className="mais-artwork" aria-hidden="true">
+    <div className="artwork-note">A connected view.<br />A considered decision.</div>
+    <div className="research-sheet sheet-back"><span>03 / PORTFOLIO CONTEXT</span><div className="sheet-bars"><i /><i /><i /><i /><i /></div></div>
+    <div className="research-sheet sheet-middle"><span>02 / EVIDENCE & CONTEXT</span><div className="sheet-lines"><i /><i /><i /><i /></div><div className="sheet-stamp">SOURCE<br />CONNECTED</div></div>
+    <div className="research-sheet sheet-front"><div className="sheet-topline"><span>01 / INVESTMENT THESIS</span><Mark /></div><strong>See the whole.<br /><em>Decide with context.</em></strong><div className="sheet-bottom"><span>MAIS</span><span>Research → Reasoning → Decision</span></div></div>
+    <div className="artwork-footnote"><span>THE PARTS, WORKING TOGETHER.</span><span>↗</span></div>
+  </div>
+}
+
+export default function Products() {
+  return <section className="products-section" id="products" data-nav="products" aria-labelledby="products-title">
+    <div className="container">
+      <SectionLabel number="02">The product portfolio</SectionLabel>
+      <div className="section-heading-row reveal"><h2 id="products-title">{site.productsIntro.heading}</h2><p>{site.productsIntro.description}</p></div>
+      <div className="product-entries">
+        {products.map((product, index) => <article key={product.id} className={`product-entry ${product.status === 'exploration' ? 'next-product' : 'featured-product'} reveal`}>
+          <div className="product-copy">
+            <p className="product-category"><span>{String(index + 1).padStart(2, '0')}</span> / {product.category}{product.status === 'exploration' ? <span className="development-dot" /> : null}</p>
+            {product.name ? <h3 className="product-name">{product.name}<span>↗</span></h3> : null}
+            {product.status === 'product' ? <h4>{product.headline}</h4> : <h3 className="next-product-title">{product.headline}</h3>}
+            {product.description.map(text => <p className="product-description" key={text}>{text}</p>)}
+            {product.capabilities ? <ul className="capability-list">{product.capabilities.map(capability => <li key={capability}>{capability}</li>)}</ul> : null}
+            {product.href ? <a className="text-link product-link" href={product.href}>{product.status === 'product' ? `Explore ${product.name}` : 'Where we’re looking'}<Arrow diagonal /></a> : null}
+          </div>
+          {product.id === 'mais' ? <MaisArtwork /> : <div className="next-product-art" aria-hidden="true"><span className="next-cross">+</span><span>ROOM FOR THE<br />NEXT GOOD QUESTION.</span></div>}
+        </article>)}
+      </div>
+    </div>
+  </section>
+}
